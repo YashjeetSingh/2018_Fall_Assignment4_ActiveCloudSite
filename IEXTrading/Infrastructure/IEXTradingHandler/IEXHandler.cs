@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using IEXTrading.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace IEXTrading.Infrastructure.IEXTradingHandler
 {
@@ -76,6 +77,44 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             }
 
             return Equities;
+        }
+
+        public StocksDetails GetResultsFromAPI(string symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/stats";
+            string _stocklist = "";
+
+            StocksDetails sd = new StocksDetails();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                _stocklist = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            var jsonObject = (JObject)JsonConvert.DeserializeObject(_stocklist);
+
+            if (!jsonObject.Property("dividendRate").Value.ToString().Equals(""))
+            {
+                sd.dividendRate = Convert.ToDecimal(jsonObject.Property("dividendRate").Value.ToString());
+            }
+
+            if (!jsonObject.Property("ytdChangePercent").Value.ToString().Equals(""))
+            {
+                sd.ytdChangePercent = Convert.ToDecimal(jsonObject.Property("ytdChangePercent").Value.ToString());
+            }
+
+            if (!jsonObject.Property("grossProfit").Value.ToString().Equals(""))
+            {
+                sd.grossProfit = Convert.ToDecimal(jsonObject.Property("grossProfit").Value.ToString());
+            }
+
+            sd.companyName = jsonObject.Property("companyName").Value.ToString();
+            sd.symbol = symbol;
+
+            return sd;
+
         }
     }
 }

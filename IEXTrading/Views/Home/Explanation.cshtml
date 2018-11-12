@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Explanation";
+}
+
+<h2>Explanation</h2>
+<p>
+    To recommend top 5 stocks from IEX trading platform we have used following certain criteria-
+</p>
+<p>•	Firstly, we have taken Dividends in last one year. Company which earns money and are in profit can only give dividend. We have extracted information dividend Rate from https request: /stock/aapl/stats. Dividend rate is the amount of dividend paid in dollars per stock.</p>
+<p>•	Second, we have taken the percent change in the stock in last year. We have extracted ytdchangePercent attribute from /stock/aapl/stats.</p>
+<p>
+    •	We have sorted all these attributes in descending order to get recommendations for the top 5 stocks.
+</p>

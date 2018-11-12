@@ -168,5 +168,62 @@ namespace MVCTemplate.Controllers
             return new CompaniesEquities(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
         }
 
+        public IActionResult StocksSuggested()
+        {
+            List<Company> companies = dbContext.Companies.ToList();
+
+            StocksDetails temp = new StocksDetails();
+            List<StocksDetails> tempList = new List<StocksDetails>();
+            List<StocksDetails> _model = new List<StocksDetails>();
+
+            if (companies != null)
+            {
+                foreach (var item in companies)
+                {
+                    temp = ResultsFromAPI(item.symbol);
+                    if (temp != null)
+                    {
+                        tempList.Add(temp);
+                    }
+                }
+            }
+
+            if (tempList.Count != 0)
+            {
+                _model = tempList.OrderByDescending(x => x.dividendRate).ThenByDescending(x => x.ytdChangePercent).ToList();
+            }
+
+            if (_model != null)
+            {
+                if (_model.Count >= 5)
+                {
+                    return View(_model.GetRange(0, 5));
+                }
+                else
+                {
+                    return View(_model);
+                }
+            }
+
+            return View(_model);
+        }
+
+        public StocksDetails ResultsFromAPI(string symbol)
+        {
+            StocksDetails _cd = new StocksDetails();
+            if (symbol != null)
+            {
+                IEXHandler webHandler = new IEXHandler();
+                _cd = webHandler.GetResultsFromAPI(symbol);
+            }
+
+            return _cd;
+        }
+
+        public IActionResult Explanation()
+        {
+            return View();
+        }
+
     }
 }

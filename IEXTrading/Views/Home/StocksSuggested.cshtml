@@ -1,0 +1,43 @@
+﻿@model List<IEXTrading.Models.StocksDetails>
+@{
+    ViewData["Title"] = "StocksSuggested";
+}
+
+<h2>Stocks Suggested</h2>
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.companyName)
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+
+
+
+
