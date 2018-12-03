@@ -1,12 +1,12 @@
 ﻿@model List<IEXTrading.Models.StocksDetails>
-@{
+    @{
     ViewData["Title"] = "StocksSuggested";
-}
+    }
 
-<h2>Stocks Suggested</h2>
+    <h2>Stocks Suggested</h2>
 
-@if (Model != null)
-{
+    @if (Model != null)
+    {
     <table class="table">
         <thead>
             <tr>
@@ -22,19 +22,19 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.symbol)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.companyName)
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.companyName)
+                </td>
+            </tr>
             }
 
         </tbody>
     </table>
-}
+    }
 
 
 

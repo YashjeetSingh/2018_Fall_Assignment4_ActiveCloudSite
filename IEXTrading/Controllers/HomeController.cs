@@ -9,6 +9,7 @@ using IEXTrading.Models;
 using IEXTrading.Models.ViewModel;
 using IEXTrading.DataAccess;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace MVCTemplate.Controllers
 {
@@ -38,7 +39,13 @@ namespace MVCTemplate.Controllers
             List<Company> companies = webHandler.GetSymbols();
 
             //Save comapnies in TempData
-            TempData["Companies"] = JsonConvert.SerializeObject(companies);
+            //TempData["Companies"] = JsonConvert.SerializeObject(companies);
+
+            String companiesData = JsonConvert.SerializeObject(companies);
+
+            HttpContext.Session.SetString("CompaniesData", companiesData);
+
+            //companies.GetRange(0, 9);
 
             return View(companies);
         }
@@ -83,7 +90,8 @@ namespace MVCTemplate.Controllers
         ****/
         public IActionResult PopulateSymbols()
         {
-            List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
+            string companiesData = HttpContext.Session.GetString("CompaniesData");
+            List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(companiesData);
             foreach (Company company in companies)
             {
                 //Database will give PK constraint violation error when trying to insert record with existing PK.
@@ -168,9 +176,14 @@ namespace MVCTemplate.Controllers
             return new CompaniesEquities(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
         }
 
+        public IActionResult Stocks()
+        {
+            return View();
+        }
+
         public IActionResult StocksSuggested()
         {
-            List<Company> companies = dbContext.Companies.ToList();
+            List<Company> companies = dbContext.Companies.ToList().GetRange(0, 100);
 
             StocksDetails temp = new StocksDetails();
             List<StocksDetails> tempList = new List<StocksDetails>();
@@ -206,6 +219,22 @@ namespace MVCTemplate.Controllers
             }
 
             return View(_model);
+        }
+
+        public IActionResult InFocus()
+        {
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> _list = webHandler.InFocus();
+
+            return View(_list);
+        }
+
+        public IActionResult Gainers()
+        {
+            IEXHandler webHandler = new IEXHandler();
+            List<StockStats> _list = webHandler.Gainers();
+
+            return View(_list);
         }
 
         public StocksDetails ResultsFromAPI(string symbol)

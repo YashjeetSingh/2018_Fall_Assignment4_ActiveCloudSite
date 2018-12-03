@@ -6,6 +6,7 @@ using System.Net.Http;
 using IEXTrading.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace IEXTrading.Infrastructure.IEXTradingHandler
 {
@@ -41,7 +42,7 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             if (!companyList.Equals(""))
             {
                 companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-                companies = companies.GetRange(0, 9);
+                companies = companies.GetRange(0, 100);
             }
             return companies;
         }
@@ -83,7 +84,6 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
         {
             string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/stats";
             string _stocklist = "";
-
             StocksDetails sd = new StocksDetails();
 
             httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
@@ -95,26 +95,81 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
 
             var jsonObject = (JObject)JsonConvert.DeserializeObject(_stocklist);
 
-            if (!jsonObject.Property("dividendRate").Value.ToString().Equals(""))
+            if ((jsonObject.Property("dividendRate") != null) && (!jsonObject.Property("dividendRate").Value.ToString().Equals("")))
             {
-                sd.dividendRate = Convert.ToDecimal(jsonObject.Property("dividendRate").Value.ToString());
+                //test = jsonObject.Property("dividendRate").Value.ToString();
+                sd.dividendRate = double.Parse(jsonObject.Property("dividendRate").Value.ToString(), CultureInfo.InvariantCulture);
             }
 
-            if (!jsonObject.Property("ytdChangePercent").Value.ToString().Equals(""))
+            if ((jsonObject.Property("ytdChangePercent") != null) && (!jsonObject.Property("ytdChangePercent").Value.ToString().Equals("")))
             {
-                sd.ytdChangePercent = Convert.ToDecimal(jsonObject.Property("ytdChangePercent").Value.ToString());
+                //test = jsonObject.Property("ytdChangePercent").Value.ToString();
+                sd.dividendRate = double.Parse(jsonObject.Property("ytdChangePercent").Value.ToString(), CultureInfo.InvariantCulture);
             }
 
-            if (!jsonObject.Property("grossProfit").Value.ToString().Equals(""))
+            if ((jsonObject.Property("grossProfit") != null) && (!jsonObject.Property("grossProfit").Value.ToString().Equals("")))
             {
-                sd.grossProfit = Convert.ToDecimal(jsonObject.Property("grossProfit").Value.ToString());
+                //test = jsonObject.Property("grossProfit").Value.ToString();
+                sd.dividendRate = double.Parse(jsonObject.Property("grossProfit").Value.ToString(), CultureInfo.InvariantCulture);
             }
 
-            sd.companyName = jsonObject.Property("companyName").Value.ToString();
+            if (jsonObject.Property("companyName") != null)
+            {
+                //test = jsonObject.Property("companyName").Value.ToString();
+                sd.companyName = jsonObject.Property("companyName").Value.ToString();
+            }
+
             sd.symbol = symbol;
 
             return sd;
 
         }
+
+        public List<StockStats> InFocus()
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/market/list/infocus";
+            string _stocklist = "";
+            List<StockStats> _list = null;
+            StocksDetails sd = new StocksDetails();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                _stocklist = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!_stocklist.Equals(""))
+            {
+                _list = JsonConvert.DeserializeObject<List<StockStats>>(_stocklist, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+
+
+            return _list;
+        }
+
+        public List<StockStats> Gainers()
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/market/list/gainers";
+            string _stocklist = "";
+            List<StockStats> _list = null;
+            StocksDetails sd = new StocksDetails();
+
+            httpClient.BaseAddress = new Uri(IEXTrading_API_PATH);
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                _stocklist = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!_stocklist.Equals(""))
+            {
+                _list = JsonConvert.DeserializeObject<List<StockStats>>(_stocklist, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+
+
+            return _list;
+        }
+
     }
 }
