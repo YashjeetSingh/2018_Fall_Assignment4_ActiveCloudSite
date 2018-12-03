@@ -3,7 +3,12 @@
     ViewData["Title"] = "InFocus";
 }
 
-<h2>InFocus</h2>
+<div class="headercenter">
+    <br><br><h1><u>IEX Trading Application</u></h1>
+    <h2><u>InFocus!</u></h2>
+</div><br />
+<h3>Here are the top 10 shares in focus today!</h3>
+
 
 @if (Model != null)
 {
@@ -11,10 +16,14 @@
         <thead>
             <tr>
                 <th>
-                    Symbol
+                    <h2>
+                        Symbol
+                    </h2>
                 </th>
                 <th>
-                    Name
+                    <h2>
+                        Name
+                    </h2>
                 </th>
             </tr>
         </thead>
