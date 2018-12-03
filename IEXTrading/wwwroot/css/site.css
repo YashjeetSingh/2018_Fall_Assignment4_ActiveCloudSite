@@ -1,25 +1,37 @@
 ﻿body {
-    background-color: #CFC493;
+    background-color: #E6E6FA;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #006747;
+    
 }
 
 .nav-bar {
     background-color: #006747;
     color: #CFC493;
     font-size: x-large;
+    text-align: center;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    word-spacing: 75px;
+    border-radius: 25px;
 }
 
-.nav-bar > a {
-    text-decoration: none;
-    color: inherit;
-}
+    .nav-bar > a {
+        text-decoration: none;
+        color: inherit;
+    }
 
-td {
-    padding: 10px;
-}
 
 table {
-    border-spacing: 10px;
+    width: 100%; /* Full width */
+    border-spacing: 20px;
     border-collapse: separate;
+    text-align: justify;
 }
+
+.headercenter {
+    text-align: center;
+}
+
+

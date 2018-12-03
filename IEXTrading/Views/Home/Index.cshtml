@@ -2,29 +2,49 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>IEX Trading Application</h2>
+<div class="headercenter">
+    <br><br><h1><u>IEX Trading Application</u></h1>
+</div>
 <hr />
 
 <div>
-    <p>
-        This application let's you fetch trading data from IEX via their public <a href="https://iextrading.com/developer/">API</a>.
-        <br />
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
-        <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
-        This data can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Quote">Quote</a> tab let's you select a Company(symbol) and fetches a quote from
-        <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
-        The quote can also be saved in the local database.
-        <br />
-        The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, that is, remove all its contents.
-    </p>
+    <p><h4>
+    This application let's you fetch trading data from IEX via their public <a href="https://iextrading.com/developer/">API</a>.
+    <br>
+    <br>
+    <ul>
+        <li>
+            The <a asp-area="" asp-controller="Home" asp-action="Symbols">Symbols</a> tab fetches symbols data from the
+            <a href="https://iextrading.com/developer/docs/#reference-data">IEX Reference API </a> and displays the results.
+            This data can also be saved in the local database.
+            <br>
+            <br>
+        </li>
+        <li>
+            The <a asp-area="" asp-controller="Home" asp-action="Quote">Quote</a> tab let's you select a Company(symbol) and fetches a quote from
+            <a href="https://iextrading.com/developer/docs/#stocks">IEX Stock API</a>.
+            The quote can also be saved in the local database.
+            <br>
+            <br>
+        </li>
+        <li>
+            The <a asp-area="" asp-controller="Home" asp-action="Refresh">Refresh</a> tab let's you refresh the local database, i.e., remove all its contents.<br /><br /><br />
+            <br /><br /><br />
+        </li>
+</h4> 
+       </ul>
+</p>
     <p>
         Following learning objectives are fulfilled -
         <ul>
-            <li>Connection to REST API.</li>
-            <li>Connection to database.</li>
+            <li>
+                Connection to REST API.<br>
+                <br>
+            </li>
+            <li>
+                Connection to database.<br>
+                <br>
+            </li>
             <li>CRUD operations.</li>
         </ul>
     </p>
